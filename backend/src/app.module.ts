@@ -14,6 +14,8 @@ import { PublicationsController } from './modules/publications/publications.cont
 import { PublicationsService } from './modules/publications/publications.service';
 import { DocumentsController } from './modules/documents/documents.controller';
 import { DocumentsService } from './modules/documents/documents.service';
+import { AiController } from './modules/ai/ai.controller';
+import { AiService } from './modules/ai/ai.service';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { DocumentsService } from './modules/documents/documents.service';
     OnboardingController,
     PublicationsController,
     DocumentsController,
+    AiController,
   ],
   providers: [
     PrismaService,
@@ -39,6 +42,7 @@ import { DocumentsService } from './modules/documents/documents.service';
     OnboardingService,
     PublicationsService,
     DocumentsService,
+    AiService,
   ],
 })
 export class AppModule {}
