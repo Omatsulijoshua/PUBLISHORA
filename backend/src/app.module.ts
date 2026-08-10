@@ -101,6 +101,8 @@ import { CounterR5Controller } from './modules/counter-r5/counter-r5.controller'
 import { CounterR5Service } from './modules/counter-r5/counter-r5.service';
 import { AiSynthesisController } from './modules/ai-synthesis/ai-synthesis.controller';
 import { AiSynthesisService } from './modules/ai-synthesis/ai-synthesis.service';
+import { SystemHealthController } from './modules/system-health/system-health.controller';
+import { SystemHealthService } from './modules/system-health/system-health.service';
 
 @Module({
   imports: [
@@ -160,6 +162,7 @@ import { AiSynthesisService } from './modules/ai-synthesis/ai-synthesis.service'
     UniversalSearchController,
     CounterR5Controller,
     AiSynthesisController,
+    SystemHealthController,
   ],
   providers: [
     PrismaService,
@@ -213,6 +216,7 @@ import { AiSynthesisService } from './modules/ai-synthesis/ai-synthesis.service'
     UniversalSearchService,
     CounterR5Service,
     AiSynthesisService,
+    SystemHealthService,
   ],
 })
 export class AppModule {}
