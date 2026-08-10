@@ -27,6 +27,8 @@ import { JournalsController } from './modules/journals/journals.controller';
 import { JournalsService } from './modules/journals/journals.service';
 import { SubmissionsController } from './modules/submissions/submissions.controller';
 import { SubmissionsService } from './modules/submissions/submissions.service';
+import { ReviewsController } from './modules/reviews/reviews.controller';
+import { ReviewsService } from './modules/reviews/reviews.service';
 
 @Module({
   imports: [
@@ -49,6 +51,7 @@ import { SubmissionsService } from './modules/submissions/submissions.service';
     ExportController,
     JournalsController,
     SubmissionsController,
+    ReviewsController,
   ],
   providers: [
     PrismaService,
@@ -65,6 +68,7 @@ import { SubmissionsService } from './modules/submissions/submissions.service';
     ModesService,
     JournalsService,
     SubmissionsService,
+    ReviewsService,
   ],
 })
 export class AppModule {}
