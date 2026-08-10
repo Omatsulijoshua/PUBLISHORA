@@ -71,6 +71,8 @@ import { AnalyticsController } from './modules/analytics/analytics.controller';
 import { AnalyticsService } from './modules/analytics/analytics.service';
 import { DatasetsController } from './modules/datasets/datasets.controller';
 import { DatasetsService } from './modules/datasets/datasets.service';
+import { LocalizationController } from './modules/localization/localization.controller';
+import { LocalizationService } from './modules/localization/localization.service';
 
 @Module({
   imports: [
@@ -115,6 +117,7 @@ import { DatasetsService } from './modules/datasets/datasets.service';
     BillingController,
     AnalyticsController,
     DatasetsController,
+    LocalizationController,
   ],
   providers: [
     PrismaService,
@@ -153,6 +156,7 @@ import { DatasetsService } from './modules/datasets/datasets.service';
     BillingService,
     AnalyticsService,
     DatasetsService,
+    LocalizationService,
   ],
 })
 export class AppModule {}
