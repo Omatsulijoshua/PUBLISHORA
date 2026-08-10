@@ -85,6 +85,8 @@ import { LegalController } from './modules/legal/legal.controller';
 import { LegalService } from './modules/legal/legal.service';
 import { IndexingController } from './modules/indexing/indexing.controller';
 import { IndexingService } from './modules/indexing/indexing.service';
+import { FormattingController } from './modules/formatting/formatting.controller';
+import { FormattingService } from './modules/formatting/formatting.service';
 
 @Module({
   imports: [
@@ -136,6 +138,7 @@ import { IndexingService } from './modules/indexing/indexing.service';
     ArchivingController,
     LegalController,
     IndexingController,
+    FormattingController,
   ],
   providers: [
     PrismaService,
@@ -181,6 +184,7 @@ import { IndexingService } from './modules/indexing/indexing.service';
     ArchivingService,
     LegalService,
     IndexingService,
+    FormattingService,
   ],
 })
 export class AppModule {}
