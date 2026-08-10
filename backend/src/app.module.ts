@@ -93,6 +93,8 @@ import { ReviewerCreditController } from './modules/reviewer-credit/reviewer-cre
 import { ReviewerCreditService } from './modules/reviewer-credit/reviewer-credit.service';
 import { DataDepositsController } from './modules/data-deposits/data-deposits.controller';
 import { DataDepositsService } from './modules/data-deposits/data-deposits.service';
+import { FunderComplianceController } from './modules/funder-compliance/funder-compliance.controller';
+import { FunderComplianceService } from './modules/funder-compliance/funder-compliance.service';
 
 @Module({
   imports: [
@@ -148,6 +150,7 @@ import { DataDepositsService } from './modules/data-deposits/data-deposits.servi
     JournalMetricsController,
     ReviewerCreditController,
     DataDepositsController,
+    FunderComplianceController,
   ],
   providers: [
     PrismaService,
@@ -197,6 +200,7 @@ import { DataDepositsService } from './modules/data-deposits/data-deposits.servi
     JournalMetricsService,
     ReviewerCreditService,
     DataDepositsService,
+    FunderComplianceService,
   ],
 })
 export class AppModule {}
