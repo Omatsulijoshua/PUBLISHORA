@@ -89,6 +89,8 @@ import { FormattingController } from './modules/formatting/formatting.controller
 import { FormattingService } from './modules/formatting/formatting.service';
 import { JournalMetricsController } from './modules/journal-metrics/journal-metrics.controller';
 import { JournalMetricsService } from './modules/journal-metrics/journal-metrics.service';
+import { ReviewerCreditController } from './modules/reviewer-credit/reviewer-credit.controller';
+import { ReviewerCreditService } from './modules/reviewer-credit/reviewer-credit.service';
 
 @Module({
   imports: [
@@ -142,6 +144,7 @@ import { JournalMetricsService } from './modules/journal-metrics/journal-metrics
     IndexingController,
     FormattingController,
     JournalMetricsController,
+    ReviewerCreditController,
   ],
   providers: [
     PrismaService,
@@ -189,6 +192,7 @@ import { JournalMetricsService } from './modules/journal-metrics/journal-metrics
     IndexingService,
     FormattingService,
     JournalMetricsService,
+    ReviewerCreditService,
   ],
 })
 export class AppModule {}
