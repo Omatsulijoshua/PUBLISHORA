@@ -49,6 +49,8 @@ import { ReaderController } from './modules/reader/reader.controller';
 import { ReaderService } from './modules/reader/reader.service';
 import { LabsController } from './modules/labs/labs.controller';
 import { LabsService } from './modules/labs/labs.service';
+import { ConferencesController } from './modules/conferences/conferences.controller';
+import { ConferencesService } from './modules/conferences/conferences.service';
 
 @Module({
   imports: [
@@ -82,6 +84,7 @@ import { LabsService } from './modules/labs/labs.service';
     MetricsController,
     ReaderController,
     LabsController,
+    ConferencesController,
   ],
   providers: [
     PrismaService,
@@ -109,6 +112,7 @@ import { LabsService } from './modules/labs/labs.service';
     MetricsService,
     ReaderService,
     LabsService,
+    ConferencesService,
   ],
 })
 export class AppModule {}
