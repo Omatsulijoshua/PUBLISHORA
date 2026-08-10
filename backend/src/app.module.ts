@@ -61,6 +61,8 @@ import { TenantsController } from './modules/tenants/tenants.controller';
 import { TenantsService } from './modules/tenants/tenants.service';
 import { SearchController } from './modules/search/search.controller';
 import { SearchService } from './modules/search/search.service';
+import { SecurityController } from './modules/security/security.controller';
+import { SecurityService } from './modules/security/security.service';
 
 @Module({
   imports: [
@@ -100,6 +102,7 @@ import { SearchService } from './modules/search/search.service';
     PpprController,
     TenantsController,
     SearchController,
+    SecurityController,
   ],
   providers: [
     PrismaService,
@@ -133,6 +136,7 @@ import { SearchService } from './modules/search/search.service';
     PpprService,
     TenantsService,
     SearchService,
+    SecurityService,
   ],
 })
 export class AppModule {}
