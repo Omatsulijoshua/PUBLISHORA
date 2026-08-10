@@ -4,64 +4,54 @@ import React, { useState, useEffect } from 'react';
 import { Logo } from '@/components/brand/Logo';
 import { ThemeToggle } from '@/components/brand/ThemeToggle';
 import {
-  TrendingUp, Share2, Eye, Download, MessageSquare, Twitter, Bookmark, Network, Award, ShieldCheck, Sparkles
+  BarChart3, PieChart, TrendingUp, Globe, FileSpreadsheet, Clock, Download, Layers
 } from 'lucide-react';
 
-export default function MetricsAnalyticsPage() {
-  const [metrics, setMetrics] = useState<any>(null);
-  const [graphData, setGraphData] = useState<any>(null);
+export default function AnalyticsPage() {
+  const [counterData, setCounterData] = useState<any>(null);
+  const [readershipData, setReadershipData] = useState<any>(null);
+  const [editorialData, setEditorialData] = useState<any>(null);
 
   useEffect(() => {
-    fetchMetrics();
-    fetchGraph();
+    fetchAnalyticsData();
   }, []);
 
-  const fetchMetrics = async () => {
+  const fetchAnalyticsData = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/v1/metrics/publication/c3be03dd-e3bc-4f81-a82a-fab2e6d44e51');
-      if (res.ok) {
-        const data = await res.json();
-        setMetrics(data);
-      } else {
-        mockMetrics();
-      }
+      const cRes = await fetch('http://localhost:4000/api/v1/analytics/counter-r5?type=JR1');
+      if (cRes.ok) setCounterData(await cRes.json());
+
+      const rRes = await fetch('http://localhost:4000/api/v1/analytics/readership');
+      if (rRes.ok) setReadershipData(await rRes.json());
+
+      const eRes = await fetch('http://localhost:4000/api/v1/analytics/editorial-throughput');
+      if (eRes.ok) setEditorialData(await eRes.json());
     } catch (err) {
-      mockMetrics();
+      mockData();
     }
   };
 
-  const fetchGraph = async () => {
-    try {
-      const res = await fetch('http://localhost:4000/api/v1/metrics/graph/c3be03dd-e3bc-4f81-a82a-fab2e6d44e51');
-      if (res.ok) {
-        const data = await res.json();
-        setGraphData(data);
-      } else {
-        mockGraph();
-      }
-    } catch (err) {
-      mockGraph();
-    }
-  };
-
-  const mockMetrics = () => {
-    setMetrics({
-      title: 'Quantum Computing Foundations for Distributed Systems',
-      citations: { totalCitations: 42, recentCitations30Days: 8, hIndexEstimate: 12 },
-      impactMetrics: { estimatedJif: 4.82, scimagoSjrProxy: 1.64, eigenfactorScore: 0.0125 },
-      altmetrics: { score: 87, newsMentions: 5, blogPosts: 3, policyDocuments: 2, mendeleyReaders: 140, twitterMentions: 68 },
-      readership: { totalDownloads: 1420, htmlViews: 3890, pdfDownloads: 1100 },
-    });
-  };
-
-  const mockGraph = () => {
-    setGraphData({
-      nodes: [
-        { id: 'target', label: 'Quantum Computing Foundations (Target)', group: 'target', citations: 42 },
-        { id: 'n1', label: 'Fault-Tolerant Qubit Fabric (2025)', group: 'citing', citations: 18 },
-        { id: 'n2', label: 'Topological Quantum Error Correction (2024)', group: 'cited', citations: 125 },
-        { id: 'n3', label: 'Distributed Gate Synchronization (2026)', group: 'citing', citations: 7 },
+  const mockData = () => {
+    setCounterData({
+      reportHeader: { reportName: 'Journal Usage Report (JR1)', release: '5.0' },
+      metrics: { totalItemInvestigations: 12450, totalItemRequests: 8920 },
+      topPerformingItems: [
+        { title: 'Quantum Computing Foundations for Distributed Systems', requests: 3410 },
       ],
+    });
+
+    setReadershipData({
+      totalDownloads: 48920,
+      geographicDistribution: [
+        { countryCode: 'US', countryName: 'United States', percentage: 42.5, downloads: 20791 },
+        { countryCode: 'GB', countryName: 'United Kingdom', percentage: 21.0, downloads: 10273 },
+      ],
+    });
+
+    setEditorialData({
+      avgDaysToFirstDecision: 14.2,
+      acceptanceRatePercent: 32.4,
+      submissionsInPipelineCount: 142,
     });
   };
 
@@ -71,8 +61,8 @@ export default function MetricsAnalyticsPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Logo variant="full" size="md" />
-            <span className="text-xs px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-mono font-medium">
-              Journal Metrics & Citation Network Graph
+            <span className="text-xs px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 font-mono font-medium">
+              COUNTER Release 5 & Geographic Readership Analytics
             </span>
           </div>
           <ThemeToggle />
@@ -82,75 +72,89 @@ export default function MetricsAnalyticsPage() {
       <main className="flex-1 max-w-6xl w-full mx-auto p-6 md:p-8 space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-serif font-bold text-slate-900 dark:text-white">
-            Journal Impact & Citation Analytics
+            Platform Analytics & Institutional Reporting
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Real-time citation tracking, SCImago SJR proxy estimates, Altmetric social attention scorecards, and interactive citation knowledge graph.
+          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">
+            COUNTER Release 5 compliant usage reporting, editorial pipeline speed metrics, and global geographic readership heatmaps.
           </p>
         </div>
 
-        {metrics && (
-          <>
-            {/* Impact & Citation Scorecard Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
-              <div className="p-5 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-slate-400 text-[10px]">TOTAL CITATIONS</span>
-                <div className="text-3xl font-bold text-sky-500">{metrics.citations.totalCitations}</div>
-                <div className="text-slate-500 text-[10px]">+{metrics.citations.recentCitations30Days} in last 30 days</div>
-              </div>
-
-              <div className="p-5 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-slate-400 text-[10px]">ESTIMATED JIF SCORE</span>
-                <div className="text-3xl font-bold text-emerald-500">{metrics.impactMetrics.estimatedJif}</div>
-                <div className="text-slate-500 text-[10px]">SCImago SJR: {metrics.impactMetrics.scimagoSjrProxy}</div>
-              </div>
-
-              <div className="p-5 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-slate-400 text-[10px]">ALTMETRIC BADGE SCORE</span>
-                <div className="text-3xl font-bold text-amber-500">{metrics.altmetrics.score}</div>
-                <div className="text-slate-500 text-[10px]">{metrics.altmetrics.newsMentions} news stories · {metrics.altmetrics.mendeleyReaders} Mendeley</div>
-              </div>
-
-              <div className="p-5 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-1">
-                <span className="text-slate-400 text-[10px]">READERSHIP DOWNLOADS</span>
-                <div className="text-3xl font-bold text-indigo-500">{metrics.readership.totalDownloads}</div>
-                <div className="text-slate-500 text-[10px]">{metrics.readership.htmlViews} HTML views</div>
-              </div>
-            </div>
-
-            {/* Interactive Citation Graph Visualizer */}
-            <div className="glass-panel p-6 md:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-xl">
-              <div className="flex items-center justify-between">
+        {/* COUNTER R5 Metrics Card */}
+        {counterData && (
+          <div className="p-6 md:p-8 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-6 shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+              <div>
+                <span className="text-xs font-mono text-slate-400">INSTITUTIONAL STANDARD</span>
                 <h2 className="text-xl font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Network className="w-5 h-5 text-cyan-500" /> Interactive Citation Network Graph
+                  <FileSpreadsheet className="w-5 h-5 text-violet-500" /> {counterData.reportHeader?.reportName} (R{counterData.reportHeader?.release})
                 </h2>
-                <span className="text-xs font-mono text-slate-400">Node = Publication · Edge = Citation Link</span>
               </div>
 
-              {graphData && (
-                <div className="p-6 rounded-xl bg-slate-900/90 border border-slate-800 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-                    {graphData.nodes.map((node: any) => (
-                      <div
-                        key={node.id}
-                        className={`p-4 rounded-xl border transition-all ${
-                          node.group === 'target'
-                            ? 'border-sky-500/60 bg-sky-500/10 text-sky-300'
-                            : node.group === 'citing'
-                            ? 'border-emerald-500/40 bg-emerald-500/5 text-emerald-300'
-                            : 'border-slate-700 bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="font-bold">{node.label}</div>
-                        <div className="text-[10px] opacity-75 mt-1">Citations: {node.citations} · Relation: {node.group.toUpperCase()}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <button
+                onClick={() => alert('Exporting COUNTER Release 5 TSV Archive...')}
+                className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-violet-600 hover:bg-violet-500 text-white shadow-sm flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" /> Export COUNTER R5
+              </button>
             </div>
-          </>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 space-y-1">
+                <span className="text-slate-400">Total Item Investigations</span>
+                <div className="text-2xl font-bold text-violet-500">
+                  {counterData.metrics?.totalItemInvestigations?.toLocaleString()}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 space-y-1">
+                <span className="text-slate-400">Total Item Requests (Full-Text)</span>
+                <div className="text-2xl font-bold text-emerald-500">
+                  {counterData.metrics?.totalItemRequests?.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
         )}
+
+        {/* Editorial Pipeline Velocity & Readership Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {editorialData && (
+            <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4 shadow-xl">
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Clock className="w-5 h-5 text-indigo-500" /> Editorial Velocity
+              </h3>
+
+              <div className="space-y-3 font-mono text-xs">
+                <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60">
+                  <span>Avg Time to First Decision</span>
+                  <span className="font-bold text-indigo-400">{editorialData.avgDaysToFirstDecision} days</span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60">
+                  <span>Peer Review Acceptance Rate</span>
+                  <span className="font-bold text-emerald-400">{editorialData.acceptanceRatePercent}%</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {readershipData && (
+            <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4 shadow-xl">
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Globe className="w-5 h-5 text-cyan-500" /> Readership Heatmap
+              </h3>
+
+              <div className="space-y-3 font-mono text-xs">
+                {readershipData.geographicDistribution?.map((geo: any) => (
+                  <div key={geo.countryCode} className="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60">
+                    <span>{geo.countryName} ({geo.countryCode})</span>
+                    <span className="font-bold text-cyan-400">{geo.percentage}% ({geo.downloads.toLocaleString()} dl)</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
