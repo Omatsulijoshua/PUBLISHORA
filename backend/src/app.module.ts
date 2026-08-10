@@ -73,6 +73,8 @@ import { DatasetsController } from './modules/datasets/datasets.controller';
 import { DatasetsService } from './modules/datasets/datasets.service';
 import { LocalizationController } from './modules/localization/localization.controller';
 import { LocalizationService } from './modules/localization/localization.service';
+import { OfflineController } from './modules/offline/offline.controller';
+import { OfflineService } from './modules/offline/offline.service';
 
 @Module({
   imports: [
@@ -118,6 +120,7 @@ import { LocalizationService } from './modules/localization/localization.service
     AnalyticsController,
     DatasetsController,
     LocalizationController,
+    OfflineController,
   ],
   providers: [
     PrismaService,
@@ -157,6 +160,7 @@ import { LocalizationService } from './modules/localization/localization.service
     AnalyticsService,
     DatasetsService,
     LocalizationService,
+    OfflineService,
   ],
 })
 export class AppModule {}
