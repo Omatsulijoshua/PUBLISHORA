@@ -16,6 +16,10 @@ import { DocumentsController } from './modules/documents/documents.controller';
 import { DocumentsService } from './modules/documents/documents.service';
 import { AiController } from './modules/ai/ai.controller';
 import { AiService } from './modules/ai/ai.service';
+import { ReferencesController } from './modules/references/references.controller';
+import { ReferencesService } from './modules/references/references.service';
+import { IntegrityController } from './modules/integrity/integrity.controller';
+import { IntegrityService } from './modules/integrity/integrity.service';
 
 @Module({
   imports: [
@@ -33,6 +37,8 @@ import { AiService } from './modules/ai/ai.service';
     PublicationsController,
     DocumentsController,
     AiController,
+    ReferencesController,
+    IntegrityController,
   ],
   providers: [
     PrismaService,
@@ -43,6 +49,8 @@ import { AiService } from './modules/ai/ai.service';
     PublicationsService,
     DocumentsService,
     AiService,
+    ReferencesService,
+    IntegrityService,
   ],
 })
 export class AppModule {}
