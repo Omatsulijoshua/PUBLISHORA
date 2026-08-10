@@ -1,0 +1,575 @@
+// Prisma Schema for PUBLISHORA - Global Publishing & Preparation Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+
+enum RoleName {
+  PUBLIC_USER
+  AUTHOR
+  RESEARCHER
+  ACADEMIC
+  EDITOR
+  PEER_REVIEWER
+  JOURNAL_EDITOR
+  PUBLISHER_ADMIN
+  PRODUCTION_EDITOR
+  DESIGNER
+  COPYEDITOR
+  UNIVERSITY_ADMIN
+  ORGANIZATION_ADMIN
+  SUPER_ADMIN
+  SUPPORT_AGENT
+}
+
+enum AvailabilityStatus {
+  FULLY_AVAILABLE
+  LIMITED
+  PREPARATION_ONLY
+  UNAVAILABLE
+  COMING_SOON
+}
+
+enum OperatingMode {
+  PUBLISHING_MODE
+  PREPARATION_MODE
+}
+
+enum ExperienceLevel {
+  BEGINNER
+  INTERMEDIATE
+  EXPERIENCED
+  PROFESSIONAL
+}
+
+enum GuidancePreference {
+  GUIDE_ME
+  ASSIST_ME
+  FULL_CONTROL
+}
+
+enum AiWritingLevel {
+  MINIMAL
+  BALANCED
+  ADVANCED
+}
+
+enum PublicationStatus {
+  DRAFT
+  IN_REVIEW
+  SUBMITTED
+  EDITORIAL_SCREENING
+  PEER_REVIEW
+  REVISION_REQUIRED
+  ACCEPTED
+  PRODUCTION
+  READY_TO_PUBLISH
+  PUBLISHED
+  ARCHIVED
+  REJECTED
+}
+
+enum PeerReviewModel {
+  SINGLE_BLIND
+  DOUBLE_BLIND
+  OPEN_REVIEW
+}
+
+enum ReviewRecommendation {
+  ACCEPT
+  MINOR_REVISION
+  MAJOR_REVISION
+  REJECT
+}
+
+enum IdentifierType {
+  DOI
+  ISBN
+  ISSN
+  INTERNAL_ID
+}
+
+enum IdentifierStatus {
+  UNASSIGNED
+  PENDING_REGISTRATION
+  REGISTERED
+  VERIFIED
+  REVOKED
+}
+
+enum VerificationStatus {
+  VERIFIED
+  RETRACTED
+  CORRECTED
+  ARCHIVED
+  NOT_FOUND
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentProviderName {
+  STRIPE
+  PAYSTACK
+  FLUTTERWAVE
+}
+
+// ----------------------------------------------------
+// USER & SECURITY MODELS
+// ----------------------------------------------------
+
+model User {
+  id                String       @id @default(uuid())
+  email             String       @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  countryCode       String       @default("US")
+  phoneNumber       String?
+  emailVerified     Boolean      @default(false)
+  mfaEnabled        Boolean      @default(false)
+  mfaSecret         String?
+  activeMode        OperatingMode @default(PREPARATION_MODE)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  profile           Profile?
+  userRoles         UserRole[]
+  publications      PublicationAuthor[]
+  submissions       Submission[]
+  reviews           Review[]
+  editorialAssigns  EditorialAssignment[]
+  aiRequests        AIRequest[]
+  auditLogs         AuditLog[]
+  payments          Payment[]
+  promotionProfile  PromotionProfile?
+
+  @@index([email])
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String
+  role      RoleName
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, role])
+}
+
+model Profile {
+  id                 String             @id @default(uuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photoUrl           String?
+  biography          String?
+  affiliation        String?
+  department         String?
+  researchInterests  String?            // JSON / comma separated string
+  orcid              String?
+  website            String?
+  socialLinks        String?            // JSON string
+  experienceLevel    ExperienceLevel    @default(BEGINNER)
+  guidancePreference GuidancePreference @default(GUIDE_ME)
+  aiPreference       AiWritingLevel     @default(BALANCED)
+  isPublic           Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+// ----------------------------------------------------
+// COUNTRY & AVAILABILITY ENGINE
+// ----------------------------------------------------
+
+model Country {
+  id                  String                  @id @default(uuid())
+  name                String                  @unique
+  isoCode             String                  @unique // 2-letter ISO e.g. "NG", "US"
+  region              String
+  currency            String                  @default("USD")
+  flagEmoji           String                  @default("🌐")
+  defaultStatus       AvailabilityStatus      @default(PREPARATION_ONLY)
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+
+  policies            CountryPublishingPolicy[]
+  services            CountryService[]
+}
+
+model CountryPublishingPolicy {
+  id                     String             @id @default(uuid())
+  countryId              String
+  country                Country            @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  publicationTypeId      String?
+  publicationType        PublicationType?   @relation(fields: [publicationTypeId], references: [id])
+  status                 AvailabilityStatus @default(PREPARATION_ONLY)
+  publishingAllowed      Boolean            @default(false)
+  preparationAllowed     Boolean            @default(true)
+  printAllowed           Boolean            @default(false)
+  digitalAllowed         Boolean            @default(true)
+  peerReviewAllowed      Boolean            @default(false)
+  notes                  String?
+  effectiveDate          DateTime           @default(now())
+  expirationDate         DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+model CountryService {
+  id                String             @id @default(uuid())
+  countryId         String
+  country           Country            @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  serviceName       String             // e.g. "DIGITAL_PUBLISHING", "PRINT_ON_DEMAND", "PEER_REVIEW"
+  status            AvailabilityStatus @default(PREPARATION_ONLY)
+  notes             String?
+  createdAt         DateTime           @default(now())
+}
+
+// ----------------------------------------------------
+// PUBLICATION & MANUSCRIPT ENGINE
+// ----------------------------------------------------
+
+model PublicationType {
+  id          String   @id @default(uuid())
+  name        String   @unique // e.g. "Book", "Journal Article", "Thesis", "Magazine"
+  code        String   @unique // e.g. "BOOK", "JOURNAL_ARTICLE"
+  category    String   // e.g. "Books", "Academic", "Periodicals", "Professional"
+  description String?
+  schemaConfig String? // JSON schema defining required metadata fields
+  isCustom    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  policies    CountryPublishingPolicy[]
+  publications Publication[]
+}
+
+model Publication {
+  id                String            @id @default(uuid())
+  title             String
+  subtitle          String?
+  publicationTypeId String
+  publicationType   PublicationType   @relation(fields: [publicationTypeId], references: [id])
+  status            PublicationStatus @default(DRAFT)
+  mode              OperatingMode     @default(PREPARATION_MODE)
+  countryCode       String            @default("US")
+  language          String            @default("en")
+  rights            String?
+  license           String?           @default("All Rights Reserved")
+  abstractText      String?
+  keywords          String?           // JSON string or tags
+  currentVersionNum Int               @default(1)
+  ownerUserId       String
+  createdById       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  authors           PublicationAuthor[]
+  contributors      PublicationContributor[]
+  versions          PublicationVersion[]
+  documents         Document[]
+  submissions       Submission[]
+  identifiers       Identifier[]
+  verification      VerificationRecord?
+  references        Reference[]
+}
+
+model PublicationAuthor {
+  id            String      @id @default(uuid())
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name          String
+  email         String?
+  affiliation   String?
+  orcid         String?
+  authorOrder   Int         @default(1)
+  isCorresponding Boolean   @default(false)
+
+  @@unique([publicationId, authorOrder])
+}
+
+model PublicationContributor {
+  id            String      @id @default(uuid())
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  name          String
+  role          String      // e.g. "Illustrator", "Translator", "Editor"
+}
+
+model PublicationVersion {
+  id            String      @id @default(uuid())
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  versionNumber Int
+  title         String
+  contentJson   String?     // Structured manuscript data
+  changeSummary String?
+  createdById   String
+  createdAt     DateTime    @default(now())
+}
+
+model Document {
+  id            String      @id @default(uuid())
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  fileName      String
+  fileSize      Int
+  mimeType      String
+  s3Key         String
+  storageUrl    String?
+  versionNumber Int         @default(1)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  versions      DocumentVersion[]
+  comments      DocumentComment[]
+}
+
+model DocumentVersion {
+  id          String   @id @default(uuid())
+  documentId  String
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  versionNum  Int
+  s3Key       String
+  createdById String
+  createdAt   DateTime @default(now())
+}
+
+model DocumentComment {
+  id          String   @id @default(uuid())
+  documentId  String
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  authorName  String
+  commentText String
+  lineNumber  Int?
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+// ----------------------------------------------------
+// AI & INTEGRITY ASSISTANT
+// ----------------------------------------------------
+
+model AIRequest {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promptType    String   // e.g. "PROOFREADING", "CLARITY", "RESEARCH_GAP"
+  provider      String   @default("OPENAI") // OPENAI, ANTHROPIC, GEMINI
+  modelUsed     String   @default("gpt-4o")
+  inputText     String
+  optionsJson   String?
+  createdAt     DateTime @default(now())
+
+  result        AIResult?
+}
+
+model AIResult {
+  id             String    @id @default(uuid())
+  requestId      String    @unique
+  request        AIRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  outputText     String
+  suggestionsJson String?  // Structured suggestions (fact, suggestion, warning, recommendation)
+  tokensUsed     Int       @default(0)
+  createdAt      DateTime  @default(now())
+}
+
+// ----------------------------------------------------
+// REFERENCES & CITATIONS
+// ----------------------------------------------------
+
+model Reference {
+  id            String      @id @default(uuid())
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  rawText       String
+  title         String?
+  authors       String?
+  journalName   String?
+  year          Int?
+  doi           String?
+  isbn          String?
+  url           String?
+  cslJson       String?
+  createdAt     DateTime    @default(now())
+}
+
+// ----------------------------------------------------
+// JOURNALS & EDITORIAL WORKFLOW
+// ----------------------------------------------------
+
+model Journal {
+  id                String          @id @default(uuid())
+  name              String
+  issn              String?         @unique
+  description       String?
+  aimsAndScope      String?
+  reviewModel       PeerReviewModel @default(SINGLE_BLIND)
+  openAccessPolicy  String?         @default("Gold Open Access")
+  publisherName     String          @default("PUBLISHORA Press")
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  submissions       Submission[]
+}
+
+model Submission {
+  id            String            @id @default(uuid())
+  submissionNum String            @unique // e.g. "SUB-2026-0001"
+  publicationId String
+  publication   Publication       @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  journalId     String?
+  journal       Journal?          @relation(fields: [journalId], references: [id])
+  submitterId   String
+  submitter     User              @relation(fields: [submitterId], references: [id])
+  status        PublicationStatus @default(SUBMITTED)
+  coverLetter   String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  editorialAssignments EditorialAssignment[]
+  reviews              Review[]
+  productionJobs       ProductionJob[]
+}
+
+model EditorialAssignment {
+  id           String     @id @default(uuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  editorId     String
+  editor       User       @relation(fields: [editorId], references: [id])
+  assignedAt   DateTime   @default(now())
+  status       String     @default("ACTIVE")
+}
+
+model Review {
+  id             String               @id @default(uuid())
+  submissionId   String
+  submission     Submission           @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewerId     String
+  reviewer       User                 @relation(fields: [reviewerId], references: [id])
+  recommendation ReviewRecommendation?
+  commentsToAuthor String?
+  commentsToEditor String?
+  draftSaved     Boolean              @default(false)
+  submittedAt    DateTime?
+  createdAt      DateTime             @default(now())
+}
+
+model ProductionJob {
+  id           String     @id @default(uuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       String     @default("TYPESETTING") // COPYEDITING, TYPESETTING, PROOFREADING, COMPLETED
+  pdfUrl       String?
+  epubUrl      String?
+  htmlUrl      String?
+  jatsXmlUrl   String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+// ----------------------------------------------------
+// IDENTIFIERS & VERIFICATION
+// ----------------------------------------------------
+
+model Identifier {
+  id                 String           @id @default(uuid())
+  publicationId      String
+  publication        Publication      @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  type               IdentifierType
+  value              String           // e.g. "10.1000/182", "978-3-16-148410-0"
+  registrationAgency String           // e.g. "Crossref", "Bowker", "ISSN International Centre"
+  status             IdentifierStatus @default(UNASSIGNED)
+  verificationUrl    String?
+  registeredAt       DateTime?
+  createdAt          DateTime         @default(now())
+
+  @@unique([type, value])
+}
+
+model VerificationRecord {
+  id                 String             @id @default(uuid())
+  publicationId      String             @unique
+  publication        Publication        @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  internalId         String             @unique // e.g. "PUB-VERIFY-84729103"
+  qrCodeUrl          String?
+  status             VerificationStatus @default(VERIFIED)
+  retractionNotice   String?
+  correctionNotice   String?
+  lastAuditTimestamp DateTime           @default(now())
+  createdAt          DateTime           @default(now())
+}
+
+// ----------------------------------------------------
+// ACADEMIC PROMOTION ENGINE
+// ----------------------------------------------------
+
+model PromotionProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetRank   String   // e.g. "Senior Lecturer", "Professor"
+  currentRank  String   // e.g. "Lecturer"
+  universityId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model PromotionRule {
+  id              String   @id @default(uuid())
+  universityName  String
+  targetRank      String
+  minPublications Int      @default(3)
+  requiredTypes   String   // JSON string of required types e.g. ["JOURNAL_ARTICLE"]
+  minIndexed      Int      @default(1)
+  pointsRequired  Int      @default(100)
+  createdAt       DateTime @default(now())
+}
+
+// ----------------------------------------------------
+// PAYMENTS & SUBSCRIPTIONS
+// ----------------------------------------------------
+
+model Payment {
+  id            String              @id @default(uuid())
+  userId        String
+  user          User                @relation(fields: [userId], references: [id])
+  amount        Float
+  currency      String              @default("USD")
+  provider      PaymentProviderName @default(STRIPE)
+  transactionRef String             @unique
+  status        PaymentStatus       @default(PENDING)
+  description   String?
+  createdAt     DateTime            @default(now())
+}
+
+// ----------------------------------------------------
+// AUDIT LOGGING
+// ----------------------------------------------------
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action       String   // e.g. "PUBLICATION_SUBMITTED", "ROLE_UPDATED"
+  resource     String   // e.g. "Publication:123"
+  ipAddress    String?
+  metadataJson String?
+  createdAt    DateTime @default(now())
+}
