@@ -41,6 +41,8 @@ import { PromotionController } from './modules/promotion/promotion.controller';
 import { PromotionService } from './modules/promotion/promotion.service';
 import { GrantsController } from './modules/grants/grants.controller';
 import { GrantsService } from './modules/grants/grants.service';
+import { LibraryController } from './modules/library/library.controller';
+import { LibraryService } from './modules/library/library.service';
 
 @Module({
   imports: [
@@ -70,6 +72,7 @@ import { GrantsService } from './modules/grants/grants.service';
     VerificationController,
     PromotionController,
     GrantsController,
+    LibraryController,
   ],
   providers: [
     PrismaService,
@@ -93,6 +96,7 @@ import { GrantsService } from './modules/grants/grants.service';
     VerificationService,
     PromotionService,
     GrantsService,
+    LibraryService,
   ],
 })
 export class AppModule {}
