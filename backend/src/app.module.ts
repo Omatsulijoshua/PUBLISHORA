@@ -43,6 +43,8 @@ import { GrantsController } from './modules/grants/grants.controller';
 import { GrantsService } from './modules/grants/grants.service';
 import { LibraryController } from './modules/library/library.controller';
 import { LibraryService } from './modules/library/library.service';
+import { MetricsController } from './modules/metrics/metrics.controller';
+import { MetricsService } from './modules/metrics/metrics.service';
 
 @Module({
   imports: [
@@ -73,6 +75,7 @@ import { LibraryService } from './modules/library/library.service';
     PromotionController,
     GrantsController,
     LibraryController,
+    MetricsController,
   ],
   providers: [
     PrismaService,
@@ -97,6 +100,7 @@ import { LibraryService } from './modules/library/library.service';
     PromotionService,
     GrantsService,
     LibraryService,
+    MetricsService,
   ],
 })
 export class AppModule {}
