@@ -29,6 +29,10 @@ import { SubmissionsController } from './modules/submissions/submissions.control
 import { SubmissionsService } from './modules/submissions/submissions.service';
 import { ReviewsController } from './modules/reviews/reviews.controller';
 import { ReviewsService } from './modules/reviews/reviews.service';
+import { IdentifiersController } from './modules/identifiers/identifiers.controller';
+import { IdentifiersService } from './modules/identifiers/identifiers.service';
+import { ProductionController } from './modules/production/production.controller';
+import { ProductionService } from './modules/production/production.service';
 
 @Module({
   imports: [
@@ -52,6 +56,8 @@ import { ReviewsService } from './modules/reviews/reviews.service';
     JournalsController,
     SubmissionsController,
     ReviewsController,
+    IdentifiersController,
+    ProductionController,
   ],
   providers: [
     PrismaService,
@@ -69,6 +75,8 @@ import { ReviewsService } from './modules/reviews/reviews.service';
     JournalsService,
     SubmissionsService,
     ReviewsService,
+    IdentifiersService,
+    ProductionService,
   ],
 })
 export class AppModule {}
