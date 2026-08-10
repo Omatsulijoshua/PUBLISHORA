@@ -23,6 +23,8 @@ import { IntegrityService } from './modules/integrity/integrity.service';
 import { ExportController } from './modules/export/export.controller';
 import { ExportService } from './modules/export/export.service';
 import { ModesService } from './modules/modes/modes.service';
+import { JournalsController } from './modules/journals/journals.controller';
+import { JournalsService } from './modules/journals/journals.service';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { ModesService } from './modules/modes/modes.service';
     ReferencesController,
     IntegrityController,
     ExportController,
+    JournalsController,
   ],
   providers: [
     PrismaService,
@@ -57,6 +60,7 @@ import { ModesService } from './modules/modes/modes.service';
     IntegrityService,
     ExportService,
     ModesService,
+    JournalsService,
   ],
 })
 export class AppModule {}
