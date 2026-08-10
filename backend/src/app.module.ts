@@ -25,6 +25,8 @@ import { ExportService } from './modules/export/export.service';
 import { ModesService } from './modules/modes/modes.service';
 import { JournalsController } from './modules/journals/journals.controller';
 import { JournalsService } from './modules/journals/journals.service';
+import { SubmissionsController } from './modules/submissions/submissions.controller';
+import { SubmissionsService } from './modules/submissions/submissions.service';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { JournalsService } from './modules/journals/journals.service';
     IntegrityController,
     ExportController,
     JournalsController,
+    SubmissionsController,
   ],
   providers: [
     PrismaService,
@@ -61,6 +64,7 @@ import { JournalsService } from './modules/journals/journals.service';
     ExportService,
     ModesService,
     JournalsService,
+    SubmissionsService,
   ],
 })
 export class AppModule {}
