@@ -99,6 +99,8 @@ import { UniversalSearchController } from './modules/universal-search/universal-
 import { UniversalSearchService } from './modules/universal-search/universal-search.service';
 import { CounterR5Controller } from './modules/counter-r5/counter-r5.controller';
 import { CounterR5Service } from './modules/counter-r5/counter-r5.service';
+import { AiSynthesisController } from './modules/ai-synthesis/ai-synthesis.controller';
+import { AiSynthesisService } from './modules/ai-synthesis/ai-synthesis.service';
 
 @Module({
   imports: [
@@ -157,6 +159,7 @@ import { CounterR5Service } from './modules/counter-r5/counter-r5.service';
     FunderComplianceController,
     UniversalSearchController,
     CounterR5Controller,
+    AiSynthesisController,
   ],
   providers: [
     PrismaService,
@@ -209,6 +212,7 @@ import { CounterR5Service } from './modules/counter-r5/counter-r5.service';
     FunderComplianceService,
     UniversalSearchService,
     CounterR5Service,
+    AiSynthesisService,
   ],
 })
 export class AppModule {}
