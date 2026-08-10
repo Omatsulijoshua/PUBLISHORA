@@ -91,6 +91,8 @@ import { JournalMetricsController } from './modules/journal-metrics/journal-metr
 import { JournalMetricsService } from './modules/journal-metrics/journal-metrics.service';
 import { ReviewerCreditController } from './modules/reviewer-credit/reviewer-credit.controller';
 import { ReviewerCreditService } from './modules/reviewer-credit/reviewer-credit.service';
+import { DataDepositsController } from './modules/data-deposits/data-deposits.controller';
+import { DataDepositsService } from './modules/data-deposits/data-deposits.service';
 
 @Module({
   imports: [
@@ -145,6 +147,7 @@ import { ReviewerCreditService } from './modules/reviewer-credit/reviewer-credit
     FormattingController,
     JournalMetricsController,
     ReviewerCreditController,
+    DataDepositsController,
   ],
   providers: [
     PrismaService,
@@ -193,6 +196,7 @@ import { ReviewerCreditService } from './modules/reviewer-credit/reviewer-credit
     FormattingService,
     JournalMetricsService,
     ReviewerCreditService,
+    DataDepositsService,
   ],
 })
 export class AppModule {}
