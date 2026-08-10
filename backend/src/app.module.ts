@@ -95,6 +95,8 @@ import { DataDepositsController } from './modules/data-deposits/data-deposits.co
 import { DataDepositsService } from './modules/data-deposits/data-deposits.service';
 import { FunderComplianceController } from './modules/funder-compliance/funder-compliance.controller';
 import { FunderComplianceService } from './modules/funder-compliance/funder-compliance.service';
+import { UniversalSearchController } from './modules/universal-search/universal-search.controller';
+import { UniversalSearchService } from './modules/universal-search/universal-search.service';
 
 @Module({
   imports: [
@@ -151,6 +153,7 @@ import { FunderComplianceService } from './modules/funder-compliance/funder-comp
     ReviewerCreditController,
     DataDepositsController,
     FunderComplianceController,
+    UniversalSearchController,
   ],
   providers: [
     PrismaService,
@@ -201,6 +204,7 @@ import { FunderComplianceService } from './modules/funder-compliance/funder-comp
     ReviewerCreditService,
     DataDepositsService,
     FunderComplianceService,
+    UniversalSearchService,
   ],
 })
 export class AppModule {}
