@@ -39,6 +39,8 @@ import { VerificationController } from './modules/verification/verification.cont
 import { VerificationService } from './modules/verification/verification.service';
 import { PromotionController } from './modules/promotion/promotion.controller';
 import { PromotionService } from './modules/promotion/promotion.service';
+import { GrantsController } from './modules/grants/grants.controller';
+import { GrantsService } from './modules/grants/grants.service';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { PromotionService } from './modules/promotion/promotion.service';
     DistributionController,
     VerificationController,
     PromotionController,
+    GrantsController,
   ],
   providers: [
     PrismaService,
@@ -89,6 +92,7 @@ import { PromotionService } from './modules/promotion/promotion.service';
     DistributionService,
     VerificationService,
     PromotionService,
+    GrantsService,
   ],
 })
 export class AppModule {}

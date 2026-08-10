@@ -285,6 +285,7 @@ model Publication {
   identifiers       Identifier[]
   verification      VerificationRecord?
   references        Reference[]
+  grantFundings     GrantFunding[]
 }
 
 model PublicationAuthor {
@@ -573,3 +574,16 @@ model AuditLog {
   metadataJson String?
   createdAt    DateTime @default(now())
 }
+
+model GrantFunding {
+  id                   String      @id @default(uuid())
+  publicationId        String
+  publication          Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  funderName           String
+  funderDoi            String?
+  grantNumber          String
+  grantTitle           String?
+  recipientInstitution String?
+  createdAt            DateTime    @default(now())
+}
+
