@@ -53,6 +53,8 @@ import { ConferencesController } from './modules/conferences/conferences.control
 import { ConferencesService } from './modules/conferences/conferences.service';
 import { BooksController } from './modules/books/books.controller';
 import { BooksService } from './modules/books/books.service';
+import { PreprintsController } from './modules/preprints/preprints.controller';
+import { PreprintsService } from './modules/preprints/preprints.service';
 
 @Module({
   imports: [
@@ -88,6 +90,7 @@ import { BooksService } from './modules/books/books.service';
     LabsController,
     ConferencesController,
     BooksController,
+    PreprintsController,
   ],
   providers: [
     PrismaService,
@@ -117,6 +120,7 @@ import { BooksService } from './modules/books/books.service';
     LabsService,
     ConferencesService,
     BooksService,
+    PreprintsService,
   ],
 })
 export class AppModule {}
