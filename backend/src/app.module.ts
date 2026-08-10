@@ -35,6 +35,8 @@ import { ProductionController } from './modules/production/production.controller
 import { ProductionService } from './modules/production/production.service';
 import { DistributionController } from './modules/distribution/distribution.controller';
 import { DistributionService } from './modules/distribution/distribution.service';
+import { VerificationController } from './modules/verification/verification.controller';
+import { VerificationService } from './modules/verification/verification.service';
 
 @Module({
   imports: [
@@ -61,6 +63,7 @@ import { DistributionService } from './modules/distribution/distribution.service
     IdentifiersController,
     ProductionController,
     DistributionController,
+    VerificationController,
   ],
   providers: [
     PrismaService,
@@ -81,6 +84,7 @@ import { DistributionService } from './modules/distribution/distribution.service
     IdentifiersService,
     ProductionService,
     DistributionService,
+    VerificationService,
   ],
 })
 export class AppModule {}
