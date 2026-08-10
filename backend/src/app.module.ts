@@ -20,6 +20,9 @@ import { ReferencesController } from './modules/references/references.controller
 import { ReferencesService } from './modules/references/references.service';
 import { IntegrityController } from './modules/integrity/integrity.controller';
 import { IntegrityService } from './modules/integrity/integrity.service';
+import { ExportController } from './modules/export/export.controller';
+import { ExportService } from './modules/export/export.service';
+import { ModesService } from './modules/modes/modes.service';
 
 @Module({
   imports: [
@@ -39,6 +42,7 @@ import { IntegrityService } from './modules/integrity/integrity.service';
     AiController,
     ReferencesController,
     IntegrityController,
+    ExportController,
   ],
   providers: [
     PrismaService,
@@ -51,6 +55,8 @@ import { IntegrityService } from './modules/integrity/integrity.service';
     AiService,
     ReferencesService,
     IntegrityService,
+    ExportService,
+    ModesService,
   ],
 })
 export class AppModule {}
