@@ -63,6 +63,8 @@ import { SearchController } from './modules/search/search.controller';
 import { SearchService } from './modules/search/search.service';
 import { SecurityController } from './modules/security/security.controller';
 import { SecurityService } from './modules/security/security.service';
+import { DisasterRecoveryController } from './modules/disaster-recovery/disaster-recovery.controller';
+import { DisasterRecoveryService } from './modules/disaster-recovery/disaster-recovery.service';
 
 @Module({
   imports: [
@@ -103,6 +105,7 @@ import { SecurityService } from './modules/security/security.service';
     TenantsController,
     SearchController,
     SecurityController,
+    DisasterRecoveryController,
   ],
   providers: [
     PrismaService,
@@ -137,6 +140,7 @@ import { SecurityService } from './modules/security/security.service';
     TenantsService,
     SearchService,
     SecurityService,
+    DisasterRecoveryService,
   ],
 })
 export class AppModule {}
