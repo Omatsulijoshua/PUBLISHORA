@@ -79,6 +79,8 @@ import { DevelopersController } from './modules/developers/developers.controller
 import { DevelopersService } from './modules/developers/developers.service';
 import { PerformanceController } from './modules/performance/performance.controller';
 import { PerformanceService } from './modules/performance/performance.service';
+import { ArchivingController } from './modules/archiving/archiving.controller';
+import { ArchivingService } from './modules/archiving/archiving.service';
 
 @Module({
   imports: [
@@ -127,6 +129,7 @@ import { PerformanceService } from './modules/performance/performance.service';
     OfflineController,
     DevelopersController,
     PerformanceController,
+    ArchivingController,
   ],
   providers: [
     PrismaService,
@@ -169,6 +172,7 @@ import { PerformanceService } from './modules/performance/performance.service';
     OfflineService,
     DevelopersService,
     PerformanceService,
+    ArchivingService,
   ],
 })
 export class AppModule {}
