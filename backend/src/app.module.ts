@@ -75,6 +75,8 @@ import { LocalizationController } from './modules/localization/localization.cont
 import { LocalizationService } from './modules/localization/localization.service';
 import { OfflineController } from './modules/offline/offline.controller';
 import { OfflineService } from './modules/offline/offline.service';
+import { DevelopersController } from './modules/developers/developers.controller';
+import { DevelopersService } from './modules/developers/developers.service';
 
 @Module({
   imports: [
@@ -121,6 +123,7 @@ import { OfflineService } from './modules/offline/offline.service';
     DatasetsController,
     LocalizationController,
     OfflineController,
+    DevelopersController,
   ],
   providers: [
     PrismaService,
@@ -161,6 +164,7 @@ import { OfflineService } from './modules/offline/offline.service';
     DatasetsService,
     LocalizationService,
     OfflineService,
+    DevelopersService,
   ],
 })
 export class AppModule {}
