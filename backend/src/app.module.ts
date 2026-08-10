@@ -33,6 +33,8 @@ import { IdentifiersController } from './modules/identifiers/identifiers.control
 import { IdentifiersService } from './modules/identifiers/identifiers.service';
 import { ProductionController } from './modules/production/production.controller';
 import { ProductionService } from './modules/production/production.service';
+import { DistributionController } from './modules/distribution/distribution.controller';
+import { DistributionService } from './modules/distribution/distribution.service';
 
 @Module({
   imports: [
@@ -58,6 +60,7 @@ import { ProductionService } from './modules/production/production.service';
     ReviewsController,
     IdentifiersController,
     ProductionController,
+    DistributionController,
   ],
   providers: [
     PrismaService,
@@ -77,6 +80,7 @@ import { ProductionService } from './modules/production/production.service';
     ReviewsService,
     IdentifiersService,
     ProductionService,
+    DistributionService,
   ],
 })
 export class AppModule {}
