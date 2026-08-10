@@ -57,6 +57,8 @@ import { PreprintsController } from './modules/preprints/preprints.controller';
 import { PreprintsService } from './modules/preprints/preprints.service';
 import { PpprController } from './modules/pppr/pppr.controller';
 import { PpprService } from './modules/pppr/pppr.service';
+import { TenantsController } from './modules/tenants/tenants.controller';
+import { TenantsService } from './modules/tenants/tenants.service';
 
 @Module({
   imports: [
@@ -94,6 +96,7 @@ import { PpprService } from './modules/pppr/pppr.service';
     BooksController,
     PreprintsController,
     PpprController,
+    TenantsController,
   ],
   providers: [
     PrismaService,
@@ -125,6 +128,7 @@ import { PpprService } from './modules/pppr/pppr.service';
     BooksService,
     PreprintsService,
     PpprService,
+    TenantsService,
   ],
 })
 export class AppModule {}
