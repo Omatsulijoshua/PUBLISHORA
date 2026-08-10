@@ -97,6 +97,8 @@ import { FunderComplianceController } from './modules/funder-compliance/funder-c
 import { FunderComplianceService } from './modules/funder-compliance/funder-compliance.service';
 import { UniversalSearchController } from './modules/universal-search/universal-search.controller';
 import { UniversalSearchService } from './modules/universal-search/universal-search.service';
+import { CounterR5Controller } from './modules/counter-r5/counter-r5.controller';
+import { CounterR5Service } from './modules/counter-r5/counter-r5.service';
 
 @Module({
   imports: [
@@ -154,6 +156,7 @@ import { UniversalSearchService } from './modules/universal-search/universal-sea
     DataDepositsController,
     FunderComplianceController,
     UniversalSearchController,
+    CounterR5Controller,
   ],
   providers: [
     PrismaService,
@@ -205,6 +208,7 @@ import { UniversalSearchService } from './modules/universal-search/universal-sea
     DataDepositsService,
     FunderComplianceService,
     UniversalSearchService,
+    CounterR5Service,
   ],
 })
 export class AppModule {}
