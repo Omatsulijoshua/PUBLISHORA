@@ -59,6 +59,8 @@ import { PpprController } from './modules/pppr/pppr.controller';
 import { PpprService } from './modules/pppr/pppr.service';
 import { TenantsController } from './modules/tenants/tenants.controller';
 import { TenantsService } from './modules/tenants/tenants.service';
+import { SearchController } from './modules/search/search.controller';
+import { SearchService } from './modules/search/search.service';
 
 @Module({
   imports: [
@@ -97,6 +99,7 @@ import { TenantsService } from './modules/tenants/tenants.service';
     PreprintsController,
     PpprController,
     TenantsController,
+    SearchController,
   ],
   providers: [
     PrismaService,
@@ -129,6 +132,7 @@ import { TenantsService } from './modules/tenants/tenants.service';
     PreprintsService,
     PpprService,
     TenantsService,
+    SearchService,
   ],
 })
 export class AppModule {}
