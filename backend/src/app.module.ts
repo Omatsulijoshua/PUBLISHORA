@@ -103,6 +103,8 @@ import { AiSynthesisController } from './modules/ai-synthesis/ai-synthesis.contr
 import { AiSynthesisService } from './modules/ai-synthesis/ai-synthesis.service';
 import { SystemHealthController } from './modules/system-health/system-health.controller';
 import { SystemHealthService } from './modules/system-health/system-health.service';
+import { AiRouterController } from './modules/ai-router/ai-router.controller';
+import { AiRouterService } from './modules/ai-router/ai-router.service';
 
 @Module({
   imports: [
@@ -163,6 +165,7 @@ import { SystemHealthService } from './modules/system-health/system-health.servi
     CounterR5Controller,
     AiSynthesisController,
     SystemHealthController,
+    AiRouterController,
   ],
   providers: [
     PrismaService,
@@ -217,6 +220,7 @@ import { SystemHealthService } from './modules/system-health/system-health.servi
     CounterR5Service,
     AiSynthesisService,
     SystemHealthService,
+    AiRouterService,
   ],
 })
 export class AppModule {}

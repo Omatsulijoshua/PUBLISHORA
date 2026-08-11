@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Settings,
   Shield,
+  Cpu,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -21,6 +22,7 @@ const navItems = [
   { name: 'Users & Roles', href: '/users', icon: Users },
   { name: 'Journals & Press', href: '/journals', icon: BookOpen },
   { name: 'Submissions Queue', href: '/submissions', icon: FileText },
+  { name: 'AI Key Router', href: '/ai-router', icon: Cpu },
   { name: 'System Health', href: '/health', icon: Activity },
   { name: 'APC Financials', href: '/finance', icon: DollarSign },
   { name: 'Compliance & Audits', href: '/compliance', icon: ShieldCheck },
